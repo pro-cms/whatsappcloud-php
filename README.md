@@ -7,29 +7,86 @@
 [![Tests](https://github.com/pro-cms/whatsappapi-php/actions/workflows/run-tests.yml/badge.svg?branch=main)](https://github.com/pro-cms/whatsappapi-php/actions/workflows/run-tests.yml)
 [![Total Downloads](https://img.shields.io/packagist/dt/pro-cms/whatsappapi-php.svg?style=flat-square)](https://packagist.org/packages/pro-cms/whatsappapi-php)
 
-This is where your description should go. Try and limit it to a paragraph or two. Consider adding a small example.
+Opensource python wrapper to WhatsApp Cloud API.
 
-## Support us
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/whatsappapi-php.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/whatsappapi-php)
+## Features supported
 
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
+1. Sending messages
+2. Sending  Media (images, audio, video and ducuments)
+3. Sending location
+4. Sending interactive buttons
+5. Sending template messages
 
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
-
+ 
 ## Installation
 
 You can install the package via composer:
 
 ```bash
-composer require pro-cms/whatsappapi-php
+composer require zepson/whatsappcloud-php
 ```
 
 ## Usage
 
 ```php
-$skeleton = new Pro-cms\Whatsapp();
-echo $skeleton->echoPhrase('Hello, Pro-cms!');
+<?php
+
+require_once 'vendor/autoload.php';
+use zepson\Whatsapp\WhatsappClass;
+
+$token = 'YOUR_META_WHATSAPP_APP_ACCESS_TOKEN';
+$phone_number_id = '10726082513218961';
+//send message
+$tsap = new WhatsappClass( $phone_number_id, $token);
+
+$sendtsap = $tsap->send_template('hello_world', '255654485755');
+ 
+print_r($sendtsap);
+```
+## All Available Methods
+#### Send plain text
+```php
+send_message($message, $recipient_id)
+```
+
+#### Send from template
+```php
+send_template($template, $recipient_id, $lang = "en_US")
+```
+
+#### Send Location
+```php
+ sendLocation($lat, $long, $name, $address, $recipient_id)
+```
+
+#### Send image
+```php
+send_image($image, $recipient_id, $recipient_type = "individual", $caption = null, $link = true)
+```
+#### Send Audio
+```php
+  send_audio($audio, $recipient_id, $link = true)
+```
+
+#### Send Video
+```php
+send_video($video, $recipient_id, $caption = null, $link = true)
+```
+
+#### Send Document
+```php
+send_document($document, $recipient_id, $caption = null, $link = true)
+```
+
+#### create button 
+```php
+create_button($button)
+```
+#### send button
+```php
+
+    public function send_button($button, $recipient_id)
 ```
 
 ## Testing
@@ -44,12 +101,9 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 
 ## Contributing
 
-Please see [CONTRIBUTING](https://github.com/spatie/.github/blob/main/CONTRIBUTING.md) for details.
+Contribute to make more improvement and fix bugs.
 
-## Security Vulnerabilities
-
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
-
+ 
 ## Credits
 
 - [Novath Thomas](https://github.com/pro-cms)

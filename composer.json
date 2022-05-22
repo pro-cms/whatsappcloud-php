@@ -1,11 +1,11 @@
 {
-    "name": "zepson/whatsappapi-php",
+    "name": "zepson/whatsappcloud-php",
     "description": "WhatsApp   Latest CLoud API Wrapper for PHP",
     "keywords": [
         "zepson",
-        "zepson/whatsappapi-php"
+        "zepson/whatsappcloud-php"
     ],
-    "homepage": "https://github.com/pro-cms/whatsappapi-php",
+    "homepage": "https://github.com/pro-cms/whatsappcloud-php",
     "license": "MIT",
     "authors": [
         {
