@@ -4,7 +4,6 @@
 # WhatsApp   Latest Cloud API Wrapper for PHP
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/zepson/whatsappcloud-php.svg?style=flat-square)](https://packagist.org/packages/zepson/whatsappcloud-php)
- 
 [![Total Downloads](https://img.shields.io/packagist/dt/zepson/whatsappcloud-php.svg?style=flat-square)](https://packagist.org/packages/zepson/whatsappcloud-php)
 
 Opensource python wrapper to WhatsApp Cloud API.
