@@ -106,6 +106,7 @@ Contribute to make more improvement and fix bugs.
 ## Credits
 
 - [Novath Thomas](https://github.com/pro-cms)
+- [Jordan Kalebu](https://github.com/Kalebu)
 - [All Contributors](../../contributors)
 
 ## License
