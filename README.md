@@ -1,7 +1,7 @@
 
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/support-ukraine.svg?t=1" />](https://supportukrainenow.org)
+[<img src="cloud-api.webp?t=1" />](https://supportukrainenow.org)
 
-# WhatsApp Official Latest API Wrapper for PHP
+# WhatsApp   Latest Cloud API Wrapper for PHP
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/pro-cms/whatsappapi-php.svg?style=flat-square)](https://packagist.org/packages/pro-cms/whatsappapi-php)
 [![Tests](https://github.com/pro-cms/whatsappapi-php/actions/workflows/run-tests.yml/badge.svg?branch=main)](https://github.com/pro-cms/whatsappapi-php/actions/workflows/run-tests.yml)
