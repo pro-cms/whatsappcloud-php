@@ -3,7 +3,11 @@
     "description": "WhatsApp   Latest CLoud API Wrapper for PHP",
     "keywords": [
         "zepson",
-        "zepson/whatsappcloud-php"
+        "Whatsapp cloud Api",
+        "Whatsapp cloud",
+        "Whatsapp",
+        "Whatsapp cloud php",
+        "Whatsapp cloud php wrapper"
     ],
     "homepage": "https://github.com/pro-cms/whatsappcloud-php",
     "license": "MIT",
@@ -15,7 +19,7 @@
         }
     ],
     "require": {
-        "php": "^8.0",
+        "php": "^8.0|^7.4",
         "guzzlehttp/guzzle": "^7.4"
     },
     "require-dev": {
