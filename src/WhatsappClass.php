@@ -63,7 +63,7 @@ class WhatsappClass
     }
 
     //send Location
-    public function sendLocation($lat, $long, $name, $address, $recipient_id)
+    public function send_location($lat, $long, $name, $address, $recipient_id)
     {
         $data = [
             "messaging_product" => "whatsapp",
