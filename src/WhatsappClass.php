@@ -2,28 +2,51 @@
 
 namespace zepson\Whatsapp;
 
+use Exception;
+use GuzzleHttp\Client;
+
 class WhatsappClass
 {
-    private $client;
-    private $phone_number_id;
+    /**
+     * @var
+     */
+    private $client = null;
+    /**
+     * @var
+     */
+    private $phoneNumberId;
+    /**
+     * @var
+     */
     private $access_token;
+    /**
+     * @var string
+     */
     private $url;
 
-    public function __construct($phone_number_id, $access_token)
+    /**
+     * @param string $phoneNumberId
+     * @param string $accessToken
+     * @param string $version
+     * @throws Exception
+     */
+    public function __construct(string $phoneNumberId, string $accessToken, string $version = "v13.0")
     {
-        $this->phone_number_id = $phone_number_id;
-        $this->access_token = $access_token;
-        if (empty($this->phone_number_id) || empty($this->access_token)) {
-            throw new \Exception('phone_number_id and access_token are required');
+        $this->phoneNumberId = $phoneNumberId;
+        $this->access_token = $accessToken;
+        if (empty($this->phoneNumberId) || empty($this->access_token)) {
+            throw new Exception('phone_number_id and access_token are required');
         }
-        $this->url = "https://graph.facebook.com/v13.0/{$this->phone_number_id}/messages";
+        $this->url = "https://graph.facebook.com/{$version}/{$this->phoneNumberId}/messages";
         $this->createClient();
     }
 
-    //create http client
+    /**
+     * @return void
+     */
     public function createClient()
     {
-        $this->client = new \GuzzleHttp\Client([
+        $this->client = new Client([
             'headers' => [
                 'Content-Type' => 'application/json',
                 'Authorization' => "Bearer {$this->access_token}",
@@ -32,42 +55,63 @@ class WhatsappClass
         ]);
     }
 
-    //send message
-    public function send_message($message, $recipient_id, $recipient_type = "individual", $preview_url = true)
-    {
+    /**
+     * @param string $message
+     * @param string $recipientId
+     * @param string $recipientType
+     * @param bool $previewUrl
+     * @return mixed
+     */
+    public function sendMessage(
+        string $message,
+        string $recipientId,
+        string $recipientType = "individual",
+        bool $previewUrl = true
+    ) {
         $data = [
             "messaging_product" => "whatsapp",
-            "recipient_type" => $recipient_type,
-            "to" => $recipient_id,
+            "recipient_type" => $recipientType,
+            "to" => $recipientId,
             "type" => "text",
-            "text" => ["preview_url" => $preview_url, "body" => $message],
+            "text" => ["preview_url" => $previewUrl, "body" => $message],
         ];
         $response = $this->client->post($this->url, ['json' => $data]);
-        //get json response
         return $response->getBody();
     }
 
-    //send template
-    public function send_template($template, $recipient_id, $lang = "en_US")
+    /**
+     * @param string $template
+     * @param string $recipientId
+     * @param string $lang
+     * @return mixed
+     */
+    public function sendTemplate(string $template, string $recipientId, string $lang = "en_US")
     {
         $data = [
             "messaging_product" => "whatsapp",
-            "to" => $recipient_id,
+            "to" => $recipientId,
             "type" => "template",
             "template" => ["name" => $template, "language" => ["code" => $lang]],
         ];
 
         $response = $this->client->post($this->url, ['json' => $data]);
 
-        return  $response->getBody();
+        return $response->getBody();
     }
 
-    //send Location
-    public function send_location($lat, $long, $name, $address, $recipient_id)
+    /**
+     * @param string $lat
+     * @param string $long
+     * @param string $name
+     * @param string $address
+     * @param string $recipientId
+     * @return mixed
+     */
+    public function sendLocation(string $lat, string $long, string $name, string $address, string $recipientId)
     {
         $data = [
             "messaging_product" => "whatsapp",
-            "to" => $recipient_id,
+            "to" => $recipientId,
             "type" => "location",
             "location" => [
                 "latitude" => $lat,
@@ -81,14 +125,21 @@ class WhatsappClass
         return $response->getBody();
     }
 
-    //send image
-    public function send_image($image, $recipient_id, $recipient_type = "individual", $caption = null, $link = true)
+    /**
+     * @param $image
+     * @param $recipientId
+     * @param string $recipientType
+     * @param $caption
+     * @param $link
+     * @return mixed
+     */
+    public function sendImage($image, $recipientId, string $recipientType = "individual", $caption = null, $link = true)
     {
         if ($link) {
             $data = [
                 "messaging_product" => "whatsapp",
-                "recipient_type" => $recipient_type,
-                "to" => $recipient_id,
+                "recipient_type" => $recipientType,
+                "to" => $recipientId,
                 "type" => "image",
                 "image" => [
                     "link" => $image,
@@ -98,8 +149,8 @@ class WhatsappClass
         } else {
             $data = [
                 "messaging_product" => "whatsapp",
-                "recipient_type" => $recipient_type,
-                "to" => $recipient_id,
+                "recipient_type" => $recipientType,
+                "to" => $recipientId,
                 "type" => "image",
                 "image" => [
                     "id" => $image,
@@ -112,20 +163,25 @@ class WhatsappClass
         return $response->getBody();
     }
 
-    //send audio
-    public function send_audio($audio, $recipient_id, $link = true)
+    /**
+     * @param $audio
+     * @param $recipientId
+     * @param $link
+     * @return mixed
+     */
+    public function sendAudio($audio, $recipientId, $link = true)
     {
         if ($link) {
             $data = [
                 "messaging_product" => "whatsapp",
-                "to" => $recipient_id,
+                "to" => $recipientId,
                 "type" => "audio",
                 "audio" => ["link" => $audio],
             ];
         } else {
             $data = [
                 "messaging_product" => "whatsapp",
-                "to" => $recipient_id,
+                "to" => $recipientId,
                 "type" => "audio",
                 "audio" => ["id" => $audio],
             ];
@@ -135,14 +191,19 @@ class WhatsappClass
         return $response->getBody();
     }
 
-    //send video
-
-    public function send_video($video, $recipient_id, $caption = null, $link = true)
+    /**
+     * @param $video
+     * @param $recipientId
+     * @param $caption
+     * @param $link
+     * @return mixed
+     */
+    public function sendVideo($video, $recipientId, $caption = null, $link = true)
     {
         if ($link) {
             $data = [
                 'messaging_product' => 'whatsapp',
-                'to' => $recipient_id,
+                'to' => $recipientId,
                 'type' => 'video',
                 'video' => [
                     'link' => $video,
@@ -152,7 +213,7 @@ class WhatsappClass
         } else {
             $data = [
                 'messaging_product' => 'whatsapp',
-                'to' => $recipient_id,
+                'to' => $recipientId,
                 'type' => 'video',
                 'video' => [
                     'id' => $video,
@@ -166,20 +227,26 @@ class WhatsappClass
         return $response->getBody();
     }
 
-    //send document
-    public function send_document($document, $recipient_id, $caption = null, $link = true)
+    /**
+     * @param $document
+     * @param $recipientId
+     * @param $caption
+     * @param $link
+     * @return mixed
+     */
+    public function sendDocument($document, $recipientId, $caption = null, $link = true)
     {
         if ($link) {
             $data = [
                 "messaging_product" => "whatsapp",
-                "to" => $recipient_id,
+                "to" => $recipientId,
                 "type" => "document",
                 "document" => ["link" => $document, "caption" => $caption],
             ];
         } else {
             $data = [
                 "messaging_product" => "whatsapp",
-                "to" => $recipient_id,
+                "to" => $recipientId,
                 "type" => "document",
                 "document" => ["id" => $document, "caption" => $caption],
             ];
@@ -190,7 +257,12 @@ class WhatsappClass
     }
 
     //create button
-    public function create_button($button)
+
+    /**
+     * @param $button
+     * @return array
+     */
+    public function createButton($button)
     {
         return [
             "type" => "list",
@@ -201,12 +273,16 @@ class WhatsappClass
         ];
     }
 
-    //send button
-    public function send_button($button, $recipient_id)
+    /**
+     * @param $button
+     * @param $recipientId
+     * @return mixed
+     */
+    public function sendButton($button, $recipientId)
     {
         $data = [
             "messaging_product" => "whatsapp",
-            "to" => $recipient_id,
+            "to" => $recipientId,
             "type" => "interactive",
             "interactive" => $this->create_button($button),
         ];
@@ -215,12 +291,20 @@ class WhatsappClass
         return $response->getBody();
     }
 
+    /**
+     * @param $data
+     * @return mixed
+     */
     public function preprocess($data)
     {
         return $data["entry"][0]["changes"][0]["value"];
     }
 
-    public function get_mobile($data)
+    /**
+     * @param $data
+     * @return mixed|void
+     */
+    public function getMobile($data)
     {
         $data = $this->preprocess($data);
         if (array_key_exists("contacts", $data)) {
@@ -228,7 +312,11 @@ class WhatsappClass
         }
     }
 
-    public function get_name($data)
+    /**
+     * @param $data
+     * @return mixed|void
+     */
+    public function getName($data)
     {
         $contact = $this->preprocess($data);
         if ($contact) {
@@ -236,7 +324,11 @@ class WhatsappClass
         }
     }
 
-    public function get_message($data)
+    /**
+     * @param $data
+     * @return mixed|void
+     */
+    public function getMessage($data)
     {
         $data = $this->preprocess($data);
         if (array_key_exists("messages", $data)) {
@@ -244,7 +336,11 @@ class WhatsappClass
         }
     }
 
-    public function get_message_id($data)
+    /**
+     * @param $data
+     * @return mixed|void
+     */
+    public function getMessageId($data)
     {
         $data = $this->preprocess($data);
         if (array_key_exists("messages", $data)) {
@@ -252,7 +348,11 @@ class WhatsappClass
         }
     }
 
-    public function get_message_timestamp($data)
+    /**
+     * @param $data
+     * @return mixed|void
+     */
+    public function getMessageTimestamp($data)
     {
         $data = $this->preprocess($data);
         if (array_key_exists("messages", $data)) {
@@ -260,7 +360,11 @@ class WhatsappClass
         }
     }
 
-    public function get_interactive_response($data)
+    /**
+     * @param $data
+     * @return mixed|void
+     */
+    public function getInteractiveResponse($data)
     {
         $data = $this->preprocess($data);
         if (array_key_exists("messages", $data)) {
@@ -268,7 +372,11 @@ class WhatsappClass
         }
     }
 
-    public function get_message_type($data)
+    /**
+     * @param $data
+     * @return mixed|void
+     */
+    public function getMessageType($data)
     {
         $data = $this->preprocess($data);
         if (array_key_exists("messages", $data)) {
@@ -276,7 +384,11 @@ class WhatsappClass
         }
     }
 
-    public function get_delivery($data)
+    /**
+     * @param $data
+     * @return mixed|void
+     */
+    public function getDelivery($data)
     {
         $data = $this->preprocess($data);
         if (array_key_exists("statuses", $data)) {
@@ -284,7 +396,11 @@ class WhatsappClass
         }
     }
 
-    public function changed_field($data)
+    /**
+     * @param $data
+     * @return mixed
+     */
+    public function changedField($data)
     {
         return $data["entry"][0]["changes"][0]["field"];
     }
