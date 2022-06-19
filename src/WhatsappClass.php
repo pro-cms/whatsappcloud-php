@@ -76,6 +76,7 @@ class WhatsappClass
             "text" => ["preview_url" => $previewUrl, "body" => $message],
         ];
         $response = $this->client->post($this->url, ['json' => $data]);
+
         return $response->getBody();
     }
 
