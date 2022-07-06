@@ -3,9 +3,9 @@
 require_once 'vendor/autoload.php';
 use zepson\Whatsapp\WhatsappClass;
 
-$tsap = new WhatsappClass('10726082513218961', 'EAAIDcQR5nFQBAGbZCBt8RZBxVyiTmWDSZBaRiZBouJFq11OpggDlTTlqr6IPrtoVsZCMuFkZC3VXvAIp9a1P5shv2X1V7j7m9p1JAcHZCGuDhlHxopUTUJ9nnrw2jEp2JJGO58veTyVKgDiJFkBgCraPDJ4now3JzkMHEjNHgQtZCHlNHEA2nbMPkpoqxtj5BwmRhvi2nfzFJnieyZBoRQsBpFxXDFSibZAzwZD');
+$tsap = new WhatsappClass('phone_number_id', 'YOUR_META_WHATSAPP_APP_ACCESS_TOKEN');
 
-$txt = $tsap->send_template('hello_world', '255654485755');
+$txt = $tsap->send_template('hello_world', 'phone_number');
 
 
 //print json format
