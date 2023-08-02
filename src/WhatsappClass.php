@@ -92,7 +92,9 @@ class WhatsappClass
 
         $template = ["name" => $template, "language" => ["code" => $lang]];
 
-        if (count($parameters) > 0) $template["components"] = [["type" => "body", "parameters" => $this->buildParameters($parameters)]];
+        if (count($parameters) > 0) {
+            $template["components"] = [["type" => "body", "parameters" => $this->buildParameters($parameters)]];
+        }
 
         $data = [
             "messaging_product" => "whatsapp",
@@ -412,7 +414,6 @@ class WhatsappClass
         return $data["entry"][0]["changes"][0]["field"];
     }
 
-
     /**
      * Build Parameter for Template Message
      *
@@ -429,7 +430,7 @@ class WhatsappClass
             } else {
                 $parameters[] = [
                     'type' => 'text',
-                    'text' => $param
+                    'text' => $param,
                 ];
             }
         }
