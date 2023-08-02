@@ -83,16 +83,22 @@ class WhatsappClass
     /**
      * @param string $template
      * @param string $recipientId
-     * @param string $lang
+     * @param string $lang,
+     * @param array $parameters
      * @return mixed
      */
-    public function sendTemplate(string $template, string $recipientId, string $lang = "en_US")
+    public function sendTemplate(string $template, string $recipientId, string $lang = "en_US", $parameters = [])
     {
+
+        $template = ["name" => $template, "language" => ["code" => $lang]];
+
+        if (count($parameters) > 0) $template["components"] = [["type" => "body", "parameters" => $this->buildParameters($parameters)]];
+
         $data = [
             "messaging_product" => "whatsapp",
             "to" => $recipientId,
             "type" => "template",
-            "template" => ["name" => $template, "language" => ["code" => $lang]],
+            "template" => $template,
         ];
 
         $response = $this->client->post($this->url, ['json' => $data]);
@@ -404,5 +410,31 @@ class WhatsappClass
     public function changedField($data)
     {
         return $data["entry"][0]["changes"][0]["field"];
+    }
+
+
+    /**
+     * Build Parameter for Template Message
+     *
+     * @param array $params
+     * @return array $parameters
+     */
+    public function buildParameters(array $params)
+    {
+        $parameters = [];
+
+        foreach ($params as $key => $param) {
+            if (isset($param['type'])) {
+                $parameters[] = $param;
+            } else {
+                $parameters[] = [
+                    'type' => 'text',
+                    'text' => $param
+                ];
+            }
+        }
+
+
+        return $parameters;
     }
 }
